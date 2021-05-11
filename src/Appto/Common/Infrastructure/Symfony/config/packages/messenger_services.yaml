@@ -1,0 +1,8 @@
+#services:
+#    messenger.middleware.doctrine_transaction:
+#        class: Symfony\Bridge\Doctrine\Messenger\DoctrineTransactionMiddleware
+#        # Definition is abstract, so a child definition will be created, per bus
+#        abstract: true
+#        # Main dependencies are defined by the parent definitions.
+#        # Arguments provided in the middleware config will be appended on the child definition.
+#        arguments: ['@doctrine']

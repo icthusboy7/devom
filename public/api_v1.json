@@ -1,0 +1,788 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Appto Devotional",
+        "description": "This is a DEVOM server.  You can find out more about Devotionals at\n        [http://appto.eu/devom](http://appto.eu/devom)",
+        "contact": {
+            "name": "Devom Team",
+            "email": "devom@appto.eu"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "{server}/api/v1",
+            "description": "Appto Devotional API Mocking",
+            "variables": {
+                "server": {
+                    "enum": [
+                        "https://proservant-staging.herokuapp.com",
+                        "http://localhost:8030"
+                    ],
+                    "default": "http://localhost:8030"
+                }
+            }
+        }
+    ],
+    "paths": {
+        "/devotionals": {
+            "get": {
+                "tags": [
+                    "Devotional"
+                ],
+                "summary": "List Devotional",
+                "description": "List devotional",
+                "operationId": "listDevotional",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DevotionalView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Devotional"
+                ],
+                "summary": "Create Devotional",
+                "description": "Create devotional",
+                "operationId": "addDevotional",
+                "requestBody": {
+                    "request": "Devotional",
+                    "description": "Devotional object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DevotionalView"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/devotionals/{id}": {
+            "get": {
+                "tags": [
+                    "Devotional"
+                ],
+                "summary": "Get Devotional",
+                "description": "Get devotional",
+                "operationId": "getDevotional",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of yearly plan to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DevotionalView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Devotional"
+                ],
+                "summary": "Remove Devotional",
+                "description": "Remove Devotional",
+                "operationId": "RemoveDevotional",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of Devotional",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict - You cannot delete a devotional used in a plan"
+                    }
+                }
+            }
+        },
+        "/yearly-plans/{id}/devotionals": {
+            "get": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "YearlyPlan Daily Devotionals",
+                "description": "Get YearlyPlan Daily Devotionals",
+                "operationId": "getYearlyPlanDailyDevotionals",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of yearly plan to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DailyDevotionalView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Add DailyDevotional to YearlyPlan",
+                "description": "Add DailyDevotional to YearlyPlan",
+                "operationId": "AddDailyDevotional",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of Plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "devotionalId": {
+                                        "type": "uuid"
+                                    },
+                                    "day": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "devotionalId": "848de040-95ef-4636-9cc6-c2b3d7beaf55",
+                                    "day": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/yearly-plans": {
+            "get": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "List YearlyPlans",
+                "description": "List YearlyPlans",
+                "operationId": "listYearlyPlan",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/YearlyPlanView"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Create YearlyPlan",
+                "description": "Create YearlyPlan",
+                "operationId": "CreateYearlyPlan",
+                "requestBody": {
+                    "request": "YearlyPlan",
+                    "description": "YearlyPlan object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/YearlyPlanView"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            },
+            "head": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Devotional exists in Yearly Plans",
+                "description": "Check if devotional exists in yearly plans",
+                "operationId": "existsYearlyPlan",
+                "parameters": [
+                    {
+                        "name": "devotionalId",
+                        "in": "query",
+                        "description": "Devotional ID to Find",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exists"
+                    },
+                    "204": {
+                        "description": "Not Exists"
+                    }
+                }
+            }
+        },
+        "/yearly-plans/{id}/devotionals/{devotionalId}": {
+            "get": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Get Daily Devotional",
+                "description": "Get Daily Devotional",
+                "operationId": "GetDailyDevotional",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of yearly plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "devotionalId",
+                        "in": "path",
+                        "description": "ID of devotional",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DailyDevotionalView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Remove DailyDevotional from YearlyPlan",
+                "description": "Remove DailyDevotional from YearlyPlan",
+                "operationId": "RemoveDailyDevotional",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of Plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "devotionalId",
+                        "in": "path",
+                        "description": "DailyDevotional to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/yearly-plans/{id}": {
+            "get": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "YearlyPlan",
+                "description": "Get YearlyPlan",
+                "operationId": "getYearlyPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of yearly plan to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/YearlyPlanView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "YearlyPlan"
+                ],
+                "summary": "Remove YearlyPlan",
+                "description": "Remove YearlyPlan",
+                "operationId": "RemoveYearlyPlan",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of Plan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Taxonomy"
+                ],
+                "summary": "List Category",
+                "description": "List category",
+                "operationId": "listCategory",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Taxonomy"
+                ],
+                "summary": "Create Category",
+                "description": "Create Category",
+                "operationId": "addCategory",
+                "requestBody": {
+                    "request": "Category",
+                    "description": "Category object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryView"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    }
+                }
+            }
+        },
+        "/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Taxonomy"
+                ],
+                "summary": "get Category",
+                "description": "get category",
+                "operationId": "getCategory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of category to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryView"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "DevotionalView": {
+                "title": "Devotional model",
+                "description": "Devotional model",
+                "required": [
+                    "id",
+                    "title",
+                    "content",
+                    "authorId",
+                    "publisherId"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "passage": {
+                        "$ref": "#/components/schemas/PassageView"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "bibleReading": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "audioUrl": {
+                        "type": "string",
+                        "format": "url",
+                        "nullable": true
+                    },
+                    "authorId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "publisherId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "topics": {
+                        "description": "Topic Ids",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "status": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "devotionalView"
+                }
+            },
+            "PassageView": {
+                "title": "Devotional Passage Model",
+                "description": "Devotional passage model",
+                "required": [
+                    "text",
+                    "reference"
+                ],
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "reference": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "PassageView"
+                }
+            },
+            "TopicView": {
+                "title": "Topic model",
+                "description": "Topic model",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Topic"
+                }
+            },
+            "DailyDevotionalView": {
+                "title": "DailyDevotional model",
+                "description": "DailyDevotional model",
+                "required": [
+                    "devotionalId",
+                    "day"
+                ],
+                "properties": {
+                    "devotional": {
+                        "$ref": "#/components/schemas/DevotionalView"
+                    },
+                    "day": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "DailyDevotionalView"
+                }
+            },
+            "YearlyPlanView": {
+                "title": "YearlyPlan model",
+                "description": "YearlyPlan model",
+                "required": [
+                    "id",
+                    "year",
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "year": {
+                        "title": "year",
+                        "description": "year > 0",
+                        "type": "integer",
+                        "format": "int"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "coverPhotoUrl": {
+                        "type": "string",
+                        "format": "url",
+                        "nullable": true
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "yearlyPlanView"
+                }
+            },
+            "CategoryView": {
+                "title": "Category model",
+                "description": "Category model",
+                "required": [
+                    "id",
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "position": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "category"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Devotional",
+            "description": "Everything about Devotionals"
+        },
+        {
+            "name": "YearlyPlan",
+            "description": "Everything about Yearly Plans"
+        },
+        {
+            "name": "Taxonomy",
+            "description": "Everything about Taxonomy"
+        }
+    ],
+    "externalDocs": {
+        "description": "Find out more about Devotionals",
+        "url": "http://appto.eu/devom"
+    }
+}

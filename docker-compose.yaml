@@ -1,0 +1,20 @@
+version: '3.6'
+
+services:
+    php:
+        container_name: ci-devom-php
+        image: ci-php-fpm
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        networks:
+            - devom
+        volumes:
+            - .:/app:delegated
+        env_file:
+            - .env
+
+networks:
+    devom:
+        name: devom_net

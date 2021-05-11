@@ -1,0 +1,57 @@
+# This is a sample build configuration for Docker.
+# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+# image: atlassian/default-image:latest
+
+# bitbucket-pipelines.yml validator: https://bitbucket-pipelines.prod.public.atl-paas.net/validator
+
+pipelines:
+  default:
+    - step:
+        name : Build and test
+        services:
+          - docker
+        caches:
+          - docker
+          - composer
+        script: # This script runs on all branches that don't have any specific pipeline assigned in 'branches'.
+           - echo $PRIVATE_SSH_KEY > ~/.ssh/id_rsa.tmp # note: assumes base64 encoded ssh key without a passphrase
+           - base64 -d ~/.ssh/id_rsa.tmp > ~/.ssh/id_rsa
+           - chmod 600 ~/.ssh/id_rsa
+           - base64 ~/.ssh/id_rsa
+
+          # build the Docker image (this will use the Dockerfile in the root of the repo)
+           - docker build -t devom-php --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)"  .
+           - docker run -d --name devom-php-ci devom-php
+           - docker exec devom-php-ci composer test
+  tags:
+    '*':    # specify the tag
+        - step:
+            name: Release Deployment
+            script:
+                - git fetch --unshallow
+                - git push -u -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $BITBUCKET_TAG^{}:master
+
+  branches:
+    staging:
+      - step:
+          name: Test Deployment
+          script:
+             - git fetch --unshallow
+             - git push -u -f https://heroku:$HEROKU_STAGING_API_KEY@git.heroku.com/$HEROKU_STAGING_APP_NAME.git HEAD:master
+    
+    master:
+      - step:
+          name: Production Deployment
+          clone:
+              enabled: false
+          script:
+              - echo "You made a commit to master"
+        #            - yes | ./alfred_majordomo -a $ALFRED_APP_PRODUCTION -c $BITBUCKET_COMMIT
+    #feature/*:
+    #  - step:
+    #      image: openjdk:8 # This step uses its own image
+    #      script:
+    #        - echo "This script runs only on commit to branches with names that match the feature/* pattern."

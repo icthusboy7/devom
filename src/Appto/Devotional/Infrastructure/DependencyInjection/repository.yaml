@@ -1,0 +1,30 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    #DoctrineRepository
+    Appto\Devotional\Infrastructure\Persistence\WriteModel\Doctrine\:
+        resource: '%kernel.project_dir%/src/Appto/Devotional/Infrastructure/Persistence/WriteModel/Doctrine/**/{Entity,*Repository.php}'
+        autoconfigure: true
+
+    #EventSourcing
+    Appto\Common\Domain\EventStore\InMemoryEventStore: ~
+    Appto\Common\Domain\EventHandling\SimpleEventBus: ~
+    Appto\Common\Domain\EventSource\AggregateFactory\ReflectionAggregateFactory: ~
+
+    Appto\Common\Domain\EventStore\EventStore: '@Appto\Common\Domain\EventStore\InMemoryEventStore'
+    Appto\Common\Domain\EventHandling\EventBus: '@Appto\Common\Domain\EventHandling\SimpleEventBus'
+    Appto\Common\Domain\EventSource\AggregateFactory\AggregateFactory: '@Appto\Common\Domain\EventSource\AggregateFactory\ReflectionAggregateFactory'
+
+
+    #Devotional
+    Appto\Devotional\Domain\Devotional\DevotionalRepository: '@Appto\Devotional\Infrastructure\Persistence\WriteModel\Doctrine\Devotional\DoctrineDevotionalRepository'
+
+    #Category
+    Appto\Taxonomy\Domain\Category\CategoryRepository: '@Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\DoctrineCategoryRepository'
+
+    #YearlyPlan
+    Appto\Devotional\Domain\Plan\YearlyPlanRepository: '@Appto\Devotional\Infrastructure\Persistence\WriteModel\Doctrine\Plan\DoctrineYearlyPlanRepository'
+

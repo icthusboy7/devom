@@ -1,0 +1,18 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+
+    Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\:
+#        resource: '%kernel.project_dir%/src/Appto/Devotional/Infrastructure/Persistence/ReadModel/Doctrine/**/*{Repository,Assembler,Entity,*ViewRepository}.php'
+        resource: '%kernel.project_dir%/src/Appto/Devotional/Infrastructure/Persistence/ReadModel/Doctrine/**/*.php'
+        autoconfigure: true
+
+    Appto\Devotional\View\Devotional\DevotionalViewRepository: '@Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\Devotional\DoctrineDevotionalViewRepository'
+    Appto\Devotional\View\Devotional\DevotionalViewAssembler: '@Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\Devotional\DoctrineDevotionalViewAssembler'
+
+    Appto\Devotional\View\Plan\YearlyPlanViewRepository: '@Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\Plan\DoctrineYearlyPlanRepository'
+    Appto\Devotional\View\Plan\YearlyPlanViewAssembler: '@Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\Plan\DoctrineYearlyPlanViewAssembler'
+    Appto\Devotional\View\Plan\DailyDevotionalViewAssembler: '@Appto\Devotional\Infrastructure\Persistence\ReadModel\Doctrine\Plan\DoctrineDailyDevotionalViewAssembler'

@@ -1,0 +1,14 @@
+parameters:
+    bootstrap: %currentWorkingDirectory%/vendor/autoload.php
+    reportUnmatchedIgnoredErrors: false
+    inferPrivatePropertyTypeFromConstructor: true
+    ignoreErrors:
+        - '#Ternary operator condition is always true.#'
+        - '#Static call to instance method ClassName.*#'
+        - '#Strict comparison using === between.*#'
+        - '#Call to an undefined method .*::shouldReceive#'
+        - '#Call to an undefined method .*::shouldNotReceive#'
+        - '#Parameter .*MockInterface given.#'
+        - '#.*was not matched in reported errors.#'
+    excludes_analyse:
+        - src/Migrations

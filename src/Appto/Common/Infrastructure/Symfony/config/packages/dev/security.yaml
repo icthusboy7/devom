@@ -1,0 +1,33 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        users_in_memory: { memory: null }
+        a0:
+            id:
+                a0_user_provider
+    firewalls:
+        secured_area:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: jwt_auth.jwt_authenticator
+            provider: a0
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: lazy
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+#        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_AUTH0_AUTHENTICATED] }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

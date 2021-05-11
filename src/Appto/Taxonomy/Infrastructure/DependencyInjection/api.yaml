@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+
+    Appto\Taxonomy\Infrastructure\Api\:
+        resource: '%kernel.project_dir%/src/Appto/Taxonomy/Infrastructure/Api/**/*Controller.php'
+        tags: [ controller.service_arguments ]
+
+#    Appto\Common\Infrastructure\Symfony\Messenger\QueryBus: ~

@@ -1,0 +1,18 @@
+default:
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      bootstrap: tests/bootstrap.php
+      kernel:
+        class: Appto\Common\Infrastructure\Symfony\Kernel
+        environment: test
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+      base_url: http://0.0.0.0/api/v1
+      goutte: ~
+  suites:
+    default:
+      contexts:
+        - Test\Acceptance\Appto\Features\ApiContext
+      paths: [ '%paths.base%/Features/Bootstrap' ]

@@ -1,0 +1,25 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Appto\Devotional\Domain\Plan\YearlyPlan" table="dev_yearly_plan" >
+        <embedded name="id" class="Appto\Devotional\Domain\Plan\PlanId" use-column-prefix="false"/>
+        <embedded name="year" class="Appto\Common\Domain\DateTime\Year"/>
+        <embedded name="title" class="Appto\Devotional\Domain\Plan\Title" use-column-prefix="false"/>
+        <embedded name="coverPhotoUrl" class="Appto\Common\Domain\Url\Url"/>
+        <embedded name="status" class="Appto\Devotional\Domain\Plan\PlanStatus" use-column-prefix="false"/>
+        <many-to-many field="dailyDevotionals" target-entity="Appto\Devotional\Domain\Plan\DailyDevotional" fetch="EAGER" orphan-removal="true">
+            <cascade><cascade-all/></cascade>
+            <join-table name="dev_yearly_plan_daily_devotionals">
+                <join-columns>
+                    <join-column name="plan_id" referenced-column-name="id"/>
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="daily_devotional_id" referenced-column-name="entity_id" on-delete="CASCADE"/>
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+
+    </entity>
+</doctrine-mapping>

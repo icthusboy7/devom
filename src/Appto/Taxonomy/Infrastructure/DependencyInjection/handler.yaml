@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Appto\Taxonomy\Application\Command\:
+        resource: '%kernel.project_dir%/src/Appto/Taxonomy/Application/Command/**/*'
+        exclude: '%kernel.project_dir%/src/Appto/Taxonomy/Application/Command/**/*Request.php'
+
+    Appto\Taxonomy\Application\Query\:
+        resource: '%kernel.project_dir%/src/Appto/Taxonomy/Application/Query/**/*'
+        exclude: '%kernel.project_dir%/src/Appto/Taxonomy/Application/Query/**/*Request.php'

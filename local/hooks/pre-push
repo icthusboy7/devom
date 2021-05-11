@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Checks if locally staged changes are formatted properly ignoring non-staged changes.
+# Install it with the `install-hooks.sh` script
+# Based on: https://gist.github.com/cvogt/2676ed6c6d1abafa3d6a
+
+PATH=$PATH:/usr/local/bin:/usr/local/sbin
+
+#colors
+RED='\033[0;31m'
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NA='\033[0m'
+
+echo ""
+echo -e "Running pre-push hook… "
+#echo "(you can omit this with --no-verify, but don't)"
+
+#echo -e "${CYAN}* Moving to the project directory…"
+_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+DIR=$( echo $_DIR | sed 's/\/.git\/hooks$//' )
+
+echo -e "${NA}* Stashing non-staged changes so we avoid checking them…"
+git diff --quiet
+hadNoNonStagedChanges=$?
+
+if ! [ $hadNoNonStagedChanges -eq 0 ]
+then
+	git stash --keep-index -u > /dev/null
+fi
+
+echo -e "* Checking pre push conditions ('test' composer task)…${YELLOW}"
+#docker exec -it devom-php composer test > /dev/null
+docker exec -i devom-php composer test
+canPush=$?
+
+if [ $canPush -ne 0 ]
+then
+	echo -e "${RED}
+                    @@@@@@@
+                @@@@@@@@@@@@@@@
+             @@@@@@@@@@@@@@@@@@@@
+           @@@@@@@@  @@@@@  @@@@@@@
+          @@@@@@@@@@  @@@  @@@@@@@@@@
+         @@@@@@@@@@@@  @  @@@@@@@@@@@@
+        @@@@@@@@@@@  @@@@@  @@@@@@@@@@@
+       @@@@@@@@@@@@  @@@@@  @@@@@@@@@@@@
+       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        @@@@@@@@@@@@       @@@@@@@@@@@@
+         @@@@@@@@@@  @@@@@  @@@@@@@@@@
+          @@@@@@@@  @@@@@@@  @@@@@@@@
+           @@@@@@@@@@@@@@@@@@@@@@@@@
+             @@@@@@@@@@@@@@@@@@@@@
+                @@@@@@@@@@@@@@@
+                    @@@@@@@
+
+              Be a good Padawan !!!
+                  FIX YOUR CODE
+        "
+fi
+
+echo -e "${NA}* Applying the stash with the non-staged changes…"
+if ! [ $hadNoNonStagedChanges -eq 0 ]
+then
+	# sleep because otherwise commit fails when this leads to a merge conflict
+	sleep 1 && git stash pop --index > /dev/null &
+fi
+
+# Final result
+echo ""
+
+if [ $canPush -eq 0 ]
+then
+    echo -e "${GREEN}
+                             @@@@@@@
+                         @@@@@@@@@@@@@@@
+             @@@@      @@@@@@@@@@@@@@@@@@@
+            @    @   @@@@@@@@@@@@@@@@@@@@@@@
+            @    @  @@@@@@@@   @@@   @@@@@@@@@
+            @   @  @@@@@@@@@   @@@   @@@@@@@@@@
+            @  @   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+           @@@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          @         @ @@  @@@@@@@@@@@@@  @@@@@@@@
+         @@         @ @@@  @@@@@@@@@@@  @@@@@@@@@
+        @@   @@@@@@@@ @@@@  @@@@@@@@@  @@@@@@@@@@
+        @            @ @@@@           @@@@@@@@@@
+        @@           @ @@@@@@@@@@@@@@@@@@@@@@@@
+         @   @@@@@@@@@ @@@@@@@@@@@@@@@@@@@@@@@
+         @@         @ @@@@@@@@@@@@@@@@@@@@@@
+          @@@@@@@@@@   @@@@@@@@@@@@@@@@@@@
+                         @@@@@@@@@@@@@@@
+                             @@@@@@@
+
+                           ⭐️⭐️⭐️⭐️⭐️
+                            BRAVO!!!
+                      YOU ARE A GOOD PADAWAN
+    "
+    echo -e "${NA}"
+    exit 0
+else
+    echo -e "${YELLOW}[INFO] ${NA}Cancelled push due to 'test' task error (run '${YELLOW}make test${NA}' for more information)"
+    echo -e "${RED}"
+    exit 1
+fi

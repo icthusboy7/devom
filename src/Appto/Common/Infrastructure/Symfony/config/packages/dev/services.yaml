@@ -1,0 +1,15 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\Fixture\:
+    public: true
+    resource: '%kernel.project_dir%/src/Appto/Taxonomy/Infrastructure/Persistence/Doctrine/Category/Fixture/*Loader.php'
+    tags: [doctrine.fixture.orm]
+
+  Appto\Devotional\Infrastructure\Persistence\WriteModel\Doctrine\:
+    public: true
+    resource: '%kernel.project_dir%/src/Appto/Devotional/Infrastructure/Persistence/WriteModel/Doctrine/**/Fixture/*Loader.php'
+    tags: [doctrine.fixture.orm]

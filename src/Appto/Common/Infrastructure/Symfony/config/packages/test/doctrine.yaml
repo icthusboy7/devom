@@ -1,0 +1,8 @@
+doctrine:
+    dbal:
+        # configure these for your database server
+        driver: pdo_sqlite
+#        path: '%env(resolve:DATABASE_URL)%'
+        url: 'sqlite:///%kernel.project_dir%/var/test.db'
+#        url: '%kernel.cache_dir%/test_db.sqlite'
+#        url: '%env(resolve:DATABASE_URL)%'

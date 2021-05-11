@@ -1,0 +1,14 @@
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Appto\Taxonomy\Infrastructure\Persistence\Doctrine\:
+        resource: '%kernel.project_dir%/src/Appto/Taxonomy/Infrastructure/Persistence/Doctrine/**/{Entity,*Repository.php}'
+        autoconfigure: true
+
+
+    #Category
+    Appto\Taxonomy\Domain\Category\CategoryRepository: '@Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\DoctrineCategoryRepository'
+

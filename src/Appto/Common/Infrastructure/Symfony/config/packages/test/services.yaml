@@ -1,0 +1,10 @@
+#framework:
+#test: true
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Test\Acceptance\:
+        resource: '%kernel.project_dir%/tests/Acceptance'

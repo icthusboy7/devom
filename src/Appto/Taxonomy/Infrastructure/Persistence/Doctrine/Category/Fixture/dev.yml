@@ -1,0 +1,36 @@
+category:
+  8e0b9ef5-5c5f-4cb8-874a-578d3690b7d2:
+    title: 'Centralidad en Cristo'
+    description: 'Centralidad en Cristo'
+    position: 1
+  fbf42ef2-febb-467f-a1c7-de238d721723:
+    title: 'Cristianos en crisis'
+    description: 'Cristianos en crisis'
+    position: 2
+  #without description
+  6fc752c9-2ba6-40dc-9384-824820e8ea12:
+    title: 'David Clemens'
+    description: ''
+    position: 3
+  #existent title
+  ba022c12-62d5-49c4-8c41-9da1d0a8d8bd:
+    title: 'David Clemens'
+    description: 'Evangelio'
+    position: 4
+  #existent position
+  fb7ac01f-1d58-41c3-87ca-1ec3ea2d4121:
+    title: 'Himnos'
+    description: 'Himnos'
+    position: 4
+  23a9f630-f0f2-460e-9090-c8850f63be45:
+    title: 'Iglesia'
+    description: 'Iglesia'
+    position: 8
+  2095d286-d89f-43bb-ab01-6f8f5f8cf4a3:
+    title: 'Romanos'
+    description: 'Romanos'
+    position: 19
+  239d0dae-811d-4065-944d-c5d1fe7e1051:
+    title: 'Falsa enseñanza'
+    description: 'Falsa enseñanza'
+    position: 89

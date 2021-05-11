@@ -1,0 +1,10 @@
+services:
+
+  Appto\Common\Infrastructure\Symfony\EventSubscriber\ExceptionSubscriber:
+    arguments:
+      - '@Appto\Common\Infrastructure\Symfony\Exception\ExceptionsHttpStatusCodeMapping'
+      - '%kernel.environment%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Appto\Common\Infrastructure\Symfony\Exception\ExceptionsHttpStatusCodeMapping: ~

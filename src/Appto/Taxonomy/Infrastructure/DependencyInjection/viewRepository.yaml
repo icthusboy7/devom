@@ -1,0 +1,12 @@
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+  Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\:
+    resource: '%kernel.project_dir%/src/Appto/Taxonomy/Infrastructure/Persistence/Doctrine/Category/*{ViewRepository,Assembler}.php'
+    autoconfigure: true
+
+  Appto\Taxonomy\View\Category\CategoryViewRepository: '@Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\DoctrineCategoryViewRepository'
+  Appto\Taxonomy\View\Category\CategoryViewAssembler: '@Appto\Taxonomy\Infrastructure\Persistence\Doctrine\Category\DoctrineCategoryViewAssembler'

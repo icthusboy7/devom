@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+#        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Appto\Devotional\Infrastructure\Api\:
+        resource: '%kernel.project_dir%/src/Appto/Devotional/Infrastructure/Api/**/*Controller.php'
+        tags: [ controller.service_arguments ]

@@ -1,0 +1,25 @@
+yearly_plan:
+  1bec054b-ec6c-4ec0-becc-1a46bee429fb:
+    year: 2019
+    title: 'Plan 2019'
+    coverPhotoUrl:
+    devotionals:
+
+  a3f25740-d365-4c0e-8bd7-8dbb0a50cae3:
+    year: 2020
+    title: 'Plan 2020'
+    coverPhotoUrl:
+    devotionals:
+      - { devotional_id: '05f64eeb-2102-4075-b2a2-a555fef0d540', day: 1 }
+      - { devotional_id: '708390b6-7cd9-11ea-bc55-0242ac130004', day: 2 }
+      - { devotional_id: '589309a3-30a8-4525-8fdb-4abab8498c30', day: 3 }
+      - { devotional_id: '9b4393d5-20af-4fde-8e9d-72bb953fbb17', day: 4 }
+      - { devotional_id: '1eedc48e-e58f-4a5c-a9fa-c509442f0c8c', day: 5 }
+      - { devotional_id: 'fd78f54c-e15a-4b28-b6e7-d552947c3b83', day: 6 }
+
+  23a63256-f264-4d94-b7ed-8ce60f744ae3:
+    year: 2021
+    title: 'Plan 2021'
+    coverPhotoUrl: 'http://google.com'
+    devotionals:
+

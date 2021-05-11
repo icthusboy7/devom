@@ -1,0 +1,37 @@
+doctrine:
+    dbal:
+        driver: 'pdo_pgsql'
+        charset: utf8
+        server_version: '13.1'
+        url: '%env(resolve:DATABASE_URL)%'
+#        logging:  true
+#        profiling:  true
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        mappings:
+
+            common:
+                type: xml
+                dir: "%kernel.project_dir%/src/Appto/Common/Infrastructure/Persistence/Doctrine/Mapping"
+                prefix: Appto\Common\Domain
+                is_bundle: false
+
+            devotional_devotional:
+                type: xml
+                dir: "%kernel.root_dir%/../../../../Appto/Devotional/Infrastructure/Persistence/WriteModel/Doctrine/Devotional/Entity/Mapping"
+                prefix: Appto\Devotional\Domain\Devotional
+                is_bundle: false
+
+            devotional_plan:
+                type: xml
+                dir: "%kernel.root_dir%/../../../../Appto/Devotional/Infrastructure/Persistence/WriteModel/Doctrine/Plan/Entity/Mapping"
+                prefix: Appto\Devotional\Domain\Plan
+                is_bundle: false
+
+            taxonomy_category:
+                type: xml
+                dir: "%kernel.root_dir%/../../../../Appto/Taxonomy/Infrastructure/Persistence/Doctrine/Category/Entity/Mapping"
+                prefix: Appto\Taxonomy\Domain
+                is_bundle: false

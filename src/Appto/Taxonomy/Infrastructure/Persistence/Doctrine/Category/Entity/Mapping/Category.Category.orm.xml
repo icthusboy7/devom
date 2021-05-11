@@ -1,0 +1,28 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Appto\Taxonomy\Domain\Category\Category" table="tax_category" >
+        <embedded name="id" class="Appto\Taxonomy\Domain\Category\CategoryId" use-column-prefix="false"/>
+        <embedded name="title" class="Appto\Taxonomy\Domain\Category\Title" use-column-prefix="false"/>
+        <field name="description"/>
+        <embedded name="position" class="Appto\Common\Domain\Number\NaturalNumber"/>
+        <one-to-one field="parent" target-entity="Appto\Taxonomy\Domain\Category\Category">
+            <join-column name="parent_id" referenced-column-name="id" />
+        </one-to-one>
+        <many-to-many field="subCategories" target-entity="Appto\Taxonomy\Domain\Category\Category">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+            <join-table name="tax_category_subcategories">
+                <join-columns>
+                    <join-column name="category_id" referenced-column-name="id" nullable="false" unique="false" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="subcategory_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>
+    </entity>
+</doctrine-mapping>

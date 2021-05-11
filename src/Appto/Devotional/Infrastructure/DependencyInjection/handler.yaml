@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    Appto\Devotional\Application\Command\:
+        resource: '%kernel.project_dir%/src/Appto/Devotional/Application/Command/**/*'
+        exclude: '%kernel.project_dir%/src/Appto/Devotional/Application/Command/**/*Request.php'
+
+    Appto\Devotional\Application\Query\:
+        resource: '%kernel.project_dir%/src/Appto/Devotional/Application/Query/**/*'
+        exclude: '%kernel.project_dir%/src/Appto/Devotional/Application/Query/**/*Request.php'

@@ -1,0 +1,24 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Appto\Devotional\Domain\Devotional\Devotional" table="dev_devotional" >
+        <embedded name="id" class="Appto\Devotional\Domain\Devotional\DevotionalId" use-column-prefix="false"/>
+        <embedded name="title" class="Appto\Devotional\Domain\Devotional\Title" use-column-prefix="false"/>
+        <embedded name="content" class="Appto\Devotional\Domain\Devotional\Content" use-column-prefix="false"/>
+        <field name="bibleReading" nullable="true"/>
+        <embedded name="audioUrl" class="Appto\Common\Domain\Url\Url"/>
+        <embedded name="authorId" class="Appto\Devotional\Domain\Devotional\AuthorId" use-column-prefix="false"/>
+        <embedded name="publisherId" class="Appto\Devotional\Domain\Devotional\PublisherId" use-column-prefix="false"/>
+        <embedded name="passage" class="Appto\Devotional\Domain\Devotional\Passage"/>
+        <embedded name="status" class="Appto\Devotional\Domain\Devotional\DevotionalStatus" use-column-prefix="false"/>
+        <field name="topics"  type="json" nullable="true"/>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="postLoad" method="doctrinePostLoad"/>
+            <lifecycle-callback type="prePersist" method="doctrinePrePersist"/>
+            <lifecycle-callback type="preUpdate" method="doctrinePrePersist"/>
+        </lifecycle-callbacks>
+    </entity>
+</doctrine-mapping>
